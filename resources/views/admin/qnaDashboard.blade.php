@@ -7,6 +7,30 @@
         Add Q&A
     </button>
 
+    <table class="table">
+        <thead>
+            <th>#</th>
+            <th>Question</th>
+            <th>Answers</th>
+        </thead>
+        <tbody>
+            @if (count($questions) > 0)
+                    @foreach ($questions as $question )
+                    <tr>
+                        <td>{{$question->id}}</td>
+                        <td>{{$question->question}}</td>
+                        <td>
+                            <a href="#" class="ansButton" data-id="{{$question->id}}" data-toggle="modal" data-target="#showAnsModal">See Answers</a>
+                        </td>
+                    </tr>
+                    @endforeach
+            @else
+                <tr>
+                    <td colspan="3">Questions & Answers not found!</td>
+                </tr>
+            @endif
+        </tbody>
+    </table>
     <!-- Modal -->
     <div class="modal fade" id="addQnaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
@@ -34,6 +58,37 @@
                         <span class="error" style="color:red;"></span>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Add Q&A </button>
+                    </div>
+            </div>
+            </form>
+        </div>
+    </div>
+
+
+        <!-- Show Ans Modal -->
+    <div class="modal fade" id="showAnsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Show Answers</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <div class="modal-body">
+                        <table class="table">
+                            <thead>
+                                <th>#</th>
+                                <th>Answer</th>
+                                <th>Is Correct</th>
+                            </thead>
+                            <tbody class="showAnswers"></tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <span class="error" style="color:red;"></span>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
             </div>
             </form>
@@ -105,6 +160,37 @@
 
             $(document).on("click", ".removeButton", function() {
                 $(this).parent().remove();
+            });
+
+
+            $(".ansButton").click(function(){
+                var questions  = @json($questions);
+                var qid = $(this).attr('data-id');
+                var html = '';
+                for (let i = 0; i < questions.length; i++) {
+                    if(questions[i]['id'] == qid){
+                            var answersLength = questions[i]['answers'].length;
+                            for (let j = 0; j < answersLength; j++) {
+                                let is_correct = 'No';
+                                if(questions[i]['answers'][j]['is_correct'] == 1){
+                                    is_correct = 'Yes';
+                                }
+
+                                html += `
+                                    <tr>
+                                        <td>`+(j+1)+`</td>
+                                        <td> `+questions[i]['answers'][j]['answers']+` </td>
+                                        <td> `+is_correct+`</td>
+                                    </tr>
+                                `;
+
+                            }
+
+                        break;
+                    }
+                }
+
+                $('.showAnswers').html(html);
             });
         });
     </script>

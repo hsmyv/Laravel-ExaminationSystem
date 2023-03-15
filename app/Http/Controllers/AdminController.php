@@ -19,7 +19,7 @@ class AdminController extends Controller
             return response()->json(['success' => true, 'msg' => 'Subject added Successfully!']);
 
         } catch (\Throwable $e) {
-            return response()->json(['success' => true, 'msg' => $e->getMessage()]);
+            return response()->json(['success' => false, 'msg' => $e->getMessage()]);
         }
     }
 
@@ -32,7 +32,7 @@ class AdminController extends Controller
 
             return response()->json(['success' => true, 'msg' => 'Subject updated Successfully!']);
         } catch (\Throwable $e) {
-            return response()->json(['success' => true, 'msg' => $e->getMessage()]);
+            return response()->json(['success' => false, 'msg' => $e->getMessage()]);
         }
     }
 
@@ -43,7 +43,7 @@ class AdminController extends Controller
 
             return response()->json(['success' => true, 'msg' => 'Subject deleted Successfully!']);
         } catch (\Throwable $e) {
-            return response()->json(['success' => true, 'msg' => $e->getMessage()]);
+            return response()->json(['success' => false, 'msg' => $e->getMessage()]);
         }
     }
 
@@ -67,7 +67,7 @@ class AdminController extends Controller
 
             return response()->json(['success' => true, 'msg' => 'Exam added Successfully!']);
         } catch (\Exception $e) {
-            return response()->json(['success' => true, 'msg' => $e->getMessage()]);
+            return response()->json(['success' => false, 'msg' => $e->getMessage()]);
         }
     }
 
@@ -78,7 +78,7 @@ class AdminController extends Controller
             $exam = Exam::where('id', $id)->get();
             return response()->json(['success'=> true, 'data' => $exam]);
         } catch (\Exception $e) {
-            return response()->json(['success' => true, 'msg' => $e->getMessage()]);
+            return response()->json(['success' => false, 'msg' => $e->getMessage()]);
         }
     }
 
@@ -95,7 +95,7 @@ class AdminController extends Controller
 
             return response()->json(['success' => true, 'msg' => 'Exam updated Successfully!']);
         } catch (\Exception $e) {
-            return response()->json(['success' => true, 'msg' => $e->getMessage()]);
+            return response()->json(['success' => false, 'msg' => $e->getMessage()]);
         }
     }
 
@@ -106,20 +106,21 @@ class AdminController extends Controller
 
             return response()->json(['success' => true, 'msg' => 'Exam deleted Successfully!']);
         } catch (\Throwable $e) {
-            return response()->json(['success' => true, 'msg' => $e->getMessage()]);
+            return response()->json(['success' => false, 'msg' => $e->getMessage()]);
         }
     }
 
     public function qnaDashboard()
     {
-        return view('admin.qnaDashboard');
+        $questions = Question::with('answers')->get();
+        return view('admin.qnaDashboard', compact('questions'));
     }
 
 
     public function addQna(Request $request)
     {
         try {
-           $questionId = Question::insertGetId(['question', $request->question]);
+           $questionId = Question::insertGetId(['question' => $request->question]);
             foreach ($request->answers as $answer) {
                 $is_correct = 0;
                 if($request->is_correct == $answer){
@@ -135,7 +136,7 @@ class AdminController extends Controller
 
             return response()->json(['success' => true, 'msg' => 'Exam deleted Successfully!']);
         } catch (\Throwable $e) {
-            return response()->json(['success' => true, 'msg' => $e->getMessage()]);
+            return response()->json(['success' => false, 'msg' => $e->getMessage()]);
         }
     }
 
