@@ -28,7 +28,10 @@
                     <a href="/admin/dashboard"><span class="fa fa-home mr-3"></span> Subjects</a>
                 </li>
                  <li class="active">
-                    <a href="/admin/exam"><span class="fa fa-home mr-3"></span> Exams</a>
+                    <a href="/admin/exam"><span class="fa fa-tasks mr-3"></span> Exams</a>
+                </li>
+                 <li class="active">
+                    <a href="/admin/qna-ans"><span class="fa fa-question-circle mr-3"></span> Q&A</a>
                 </li>
                 <li>
                     <a href="/logout"><span class="fa fa-user mr-3"></span> Logout</a>

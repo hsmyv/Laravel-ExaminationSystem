@@ -18,6 +18,7 @@
                 <th>Subject</th>
                 <th>Date</th>
                 <th>Time</th>
+                <th>Attempt</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
@@ -32,10 +33,10 @@
                         <td>{{ $exam->subjects[0]['subject'] }}</td>
                         <td>{{ $exam->date }}</td>
                         <td>{{ $exam->time }}</td>
+                        <td>{{ $exam->attempt }}</td>
                         <td>
                             <button class="btn btn-info editButton" data-id="{{ $exam->id }}" data-toggle="modal"
                                 data-target="#editExamModal">Edit</button>
-
                         </td>
                         <td>
                             <button class="btn btn-info deleteButton" data-id="{{ $exam->id }}" data-toggle="modal"
@@ -81,6 +82,9 @@
                         <input type="date" name="date" class="w-100" required min="@php echo date('Y-m-d'); @endphp">
                         <br><br>
                         <input type="time" name="time" class="w-100" required>
+                        <br><br>
+                        <input type="number" min="1" name="attempt" class="w-100"
+                            placeholder="Enter Exam Attempt Time" required>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Add Exam</button>
@@ -122,6 +126,9 @@
                                 min="@php echo date('Y-m-d'); @endphp">
                             <br><br>
                             <input type="time" name="time" id="time" class="w-100" required>
+                            <br><br>
+                            <input type="number" min="1" id="attempt" name="attempt" class="w-100"
+                                placeholder="Enter Exam Attempt Time" required>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -227,6 +234,7 @@
                             $('#subject_id').val(exam[0].subject_id);
                             $('#date').val(exam[0].date);
                             $('#time').val(exam[0].time);
+                            $('$attempt').val(examp[0].attempt);
                         } else {
                             alert(data.msg);
                         }

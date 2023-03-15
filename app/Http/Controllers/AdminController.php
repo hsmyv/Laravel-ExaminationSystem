@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Answer;
 use App\Models\Exam;
+use App\Models\Question;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 
@@ -59,7 +61,8 @@ class AdminController extends Controller
                 'name' => $request->name,
                 'subject_id' => $request->subject_id,
                 'date'      => $request->date,
-                'time'       => $request->time
+                'time'       => $request->time,
+                'attempt'    => $request->attempt
             ]);
 
             return response()->json(['success' => true, 'msg' => 'Exam added Successfully!']);
@@ -87,6 +90,7 @@ class AdminController extends Controller
             $exam->subject_id = $request->subject_id;
             $exam->date = $request->date;
             $exam->time = $request->time;
+            $exam->attempt = $request->attempt;
             $exam->save();
 
             return response()->json(['success' => true, 'msg' => 'Exam updated Successfully!']);
@@ -99,6 +103,35 @@ class AdminController extends Controller
     {
         try {
             Exam::where('id', $request->exam_id)->delete();
+
+            return response()->json(['success' => true, 'msg' => 'Exam deleted Successfully!']);
+        } catch (\Throwable $e) {
+            return response()->json(['success' => true, 'msg' => $e->getMessage()]);
+        }
+    }
+
+    public function qnaDashboard()
+    {
+        return view('admin.qnaDashboard');
+    }
+
+
+    public function addQna(Request $request)
+    {
+        try {
+           $questionId = Question::insertGetId(['question', $request->question]);
+            foreach ($request->answers as $answer) {
+                $is_correct = 0;
+                if($request->is_correct == $answer){
+                    $is_correct = 1;
+                }
+
+                Answer::insert([
+                    'question_id' => $questionId,
+                    'answer'      => $answer,
+                    'is_correct'  => $is_correct
+                ]);
+            }
 
             return response()->json(['success' => true, 'msg' => 'Exam deleted Successfully!']);
         } catch (\Throwable $e) {
