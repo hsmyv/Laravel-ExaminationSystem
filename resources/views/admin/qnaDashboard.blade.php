@@ -135,56 +135,56 @@
     </div>
     <script>
         $(document).ready(function() {
-                    $("#addQna").submit(function(e) {
-                        e.preventDefault();
-                        if ($(".answers").length < 2) {
-                            $(".error").text("Please add minimum two answers.")
-                            setTimeout(function() {
-                                $(".error").text("");
-                            }, 2000);
-                        } else {
-                            var checkIsCorrect = false;
+            $("#addQna").submit(function(e) {
+                e.preventDefault();
+                if ($(".answers").length < 2) {
+                    $(".error").text("Please add minimum two answers.")
+                    setTimeout(function() {
+                        $(".error").text("");
+                    }, 2000);
+                } else {
+                    var checkIsCorrect = false;
 
-                            for (let i = 0; i < $(".is_correct").length; i++) {
-                                if ($(".is_correct:eq(" + i + ")").prop('checked') == true) {
-                                    checkIsCorrect = true;
-                                    $(".is_correct:eq(" + i + ")").val($(".is_correct:eq(" + i + ")").next().find(
-                                        'input').val());
-                                }
-
-                            }
-
-                            if (checkIsCorrect) {
-                                var formData = $(this).serialize();
-                                $.ajax({
-                                    url: "{{ route('addQna') }}",
-                                    type: "POST",
-                                    data: formData,
-                                    success: function(data) {
-                                        if (data.success == true) {
-                                            location.reload();
-                                        } else {
-                                            alert(data.msg);
-                                        }
-                                    }
-                                });
-                            } else {
-                                $(".error").text("Please select anyone correct answer")
-                                setTimeout(function() {
-                                    $(".error").text("");
-                                }, 2000);
-                            }
+                    for (let i = 0; i < $(".is_correct").length; i++) {
+                        if ($(".is_correct:eq(" + i + ")").prop('checked') == true) {
+                            checkIsCorrect = true;
+                            $(".is_correct:eq(" + i + ")").val($(".is_correct:eq(" + i + ")").next().find(
+                                'input').val());
                         }
-                    });
 
-                    $("#addAnswer").click(function() {
-                        if ($(".answers").length >= 6) {
-                            $(".error").text("You cad add maximum 6 answers.")
-                            setTimeout(function() {
-                                $(".error").text("");
-                            }, 2000);
-                        } else {
-                            var html = `
+                    }
+
+                    if (checkIsCorrect) {
+                        var formData = $(this).serialize();
+                        $.ajax({
+                            url: "{{ route('addQna') }}",
+                            type: "POST",
+                            data: formData,
+                            success: function(data) {
+                                if (data.success == true) {
+                                    location.reload();
+                                } else {
+                                    alert(data.msg);
+                                }
+                            }
+                        });
+                    } else {
+                        $(".error").text("Please select anyone correct answer")
+                        setTimeout(function() {
+                            $(".error").text("");
+                        }, 2000);
+                    }
+                }
+            });
+
+            $("#addAnswer").click(function() {
+                if ($(".answers").length >= 6) {
+                    $(".error").text("You cad add maximum 6 answers.")
+                    setTimeout(function() {
+                        $(".error").text("");
+                    }, 2000);
+                } else {
+                    var html = `
                         <div class="row mt-2 answers">
                             <input type="radio" name="is_correct" class="is_correct">
                             <div class="col">
@@ -193,29 +193,29 @@
                             <button class="btn btn-danger removeButton">Remove</button>
                         </div>
                     `;
-                            $(".addModalAnswers").append(html);
-                        }
-                    });
+                    $(".addModalAnswers").append(html);
+                }
+            });
 
-                    $(document).on("click", ".removeButton", function() {
-                        $(this).parent().remove();
-                    });
+            $(document).on("click", ".removeButton", function() {
+                $(this).parent().remove();
+            });
 
 
-                    $(".ansButton").click(function() {
-                        var questions = @json($questions);
-                        var qid = $(this).attr('data-id');
-                        var html = '';
-                        for (let i = 0; i < questions.length; i++) {
-                            if (questions[i]['id'] == qid) {
-                                var answersLength = questions[i]['answers'].length;
-                                for (let j = 0; j < answersLength; j++) {
-                                    let is_correct = 'No';
-                                    if (questions[i]['answers'][j]['is_correct'] == 1) {
-                                        is_correct = 'Yes';
-                                    }
+            $(".ansButton").click(function() {
+                var questions = @json($questions);
+                var qid = $(this).attr('data-id');
+                var html = '';
+                for (let i = 0; i < questions.length; i++) {
+                    if (questions[i]['id'] == qid) {
+                        var answersLength = questions[i]['answers'].length;
+                        for (let j = 0; j < answersLength; j++) {
+                            let is_correct = 'No';
+                            if (questions[i]['answers'][j]['is_correct'] == 1) {
+                                is_correct = 'Yes';
+                            }
 
-                                    html += `
+                            html += `
                                     <tr>
                                         <td>` + (j + 1) + `</td>
                                         <td> ` + questions[i]['answers'][j]['answers'] + ` </td>
@@ -223,23 +223,23 @@
                                     </tr>
                                 `;
 
-                                }
-
-                                break;
-                            }
                         }
-                        $('.showAnswers').html(html);
-                    });
 
-                    //edit or update Q&a
-                    $("#addEditAnswer").click(function() {
-                        if ($(".editAnswers").length >= 6) {
-                            $(".editError").text("You cad add maximum 6 answers.")
-                            setTimeout(function() {
-                                $(".editError").text("");
-                            }, 2000);
-                        } else {
-                            var html = `
+                        break;
+                    }
+                }
+                $('.showAnswers').html(html);
+            });
+
+            //edit or update Q&a
+            $("#addEditAnswer").click(function() {
+                if ($(".editAnswers").length >= 6) {
+                    $(".editError").text("You cad add maximum 6 answers.")
+                    setTimeout(function() {
+                        $(".editError").text("");
+                    }, 2000);
+                } else {
+                    var html = `
                         <div class="row mt-2 editAnswers">
                             <input type="radio" name="is_correct" class="edit_is_correct">
                             <div class="col">
@@ -248,106 +248,127 @@
                             <button class="btn btn-danger removeButton">Remove</button>
                         </div>
                     `;
-                            $(".editModalAnswers").append(html);
-                        }
-                    });
+                    $(".editModalAnswers").append(html);
+                }
+            });
 
 
-                    $(".editButton").click(function() {
-                        var qid = $(this).attr('data-id');
+            $(".editButton").click(function() {
+                var qid = $(this).attr('data-id');
 
-                        $.ajax({
-                            url: "{{ route('getQnaDetails') }}",
-                            type: "GET",
-                            data: {
-                                qid: qid
-                            },
-                            success: function(data) {
-                                var qna = data.data[0];
-                                $("#question_id").val(qna['id']);
-                                $("#question").val(qna['question']);
-                                $(".editAnswers").remove();
+                $.ajax({
+                    url: "{{ route('getQnaDetails') }}",
+                    type: "GET",
+                    data: {
+                        qid: qid
+                    },
+                    success: function(data) {
+                        var qna = data.data[0];
+                        $("#question_id").val(qna['id']);
+                        $("#question").val(qna['question']);
+                        $(".editAnswers").remove();
 
-                                var html = '';
+                        var html = '';
 
-                                for (let i = 0; i < qna['answers'].length; i++) {
+                        for (let i = 0; i < qna['answers'].length; i++) {
 
-                                    var checked = '';
-                                    if (qna['answers'][i]['is_correct'] == 1) {
-                                        checked = 'checked';
-                                    }
-                                    html = `
+                            var checked = '';
+                            if (qna['answers'][i]['is_correct'] == 1) {
+                                checked = 'checked';
+                            }
+                            html = `
                             <div class="row mt-2 editAnswers">
                                 <input type="radio" name="is_correct" class="edit_is_correct" ` + checked + `>
                                 <div class="col">
                                     <input type="text" class="w-100" name="answers[` + qna['answers'][i]['id'] +
-                                        `]" placeholder="Enter Answer" value="` + qna['answers'][i][
-                                            'answers'
-                                        ] + `" required>
+                                `]" placeholder="Enter Answer" value="` + qna['answers'][i][
+                                    'answers'
+                                ] + `" required>
                                 </div>
-                                <button class="btn btn-danger removeButton">Remove</button>
+                                <button class="btn btn-danger removeButton removeAnswer" data-id"` + qna['answers'][i][
+                                    'id'
+                                ] + `">Remove</button>
                             </div>
                             `;
 
-                                    $(".editModalAnswers").append(html);
+                            $(".editModalAnswers").append(html);
 
 
-                                }
+                        }
+                    }
+                });
+            });
+
+            //Update Qna
+            $(document).ready(function() {
+                $("#editQna ").submit(function(e) {
+                    e.preventDefault();
+                    if ($(".editAnswers").length < 2) {
+                        $(".editError").text("Please add minimum two answers.")
+                        setTimeout(function() {
+                            $(".editError").text("");
+                        }, 2000);
+                    } else {
+                        var checkIsCorrect = false;
+
+                        for (let i = 0; i < $(".edit_is_correct").length; i++) {
+                            if ($(".edit_is_correct:eq(" + i + ")").prop('checked') == true) {
+                                checkIsCorrect = true;
+                                $(".edit_is_correct:eq(" + i + ")").val($(".edit_is_correct:eq(" +
+                                        i + ")")
+                                    .next().find(
+                                        'input').val());
                             }
-                        });
-                    });
 
-                    //Update Qna
-                    $(document).ready(function() {
-                        $("#editQna ").submit(function(e) {
-                            e.preventDefault();
-                            if ($(".editAnswers").length < 2) {
-                                $(".editError").text("Please add minimum two answers.")
-                                setTimeout(function() {
-                                    $(".editError").text("");
-                                }, 2000);
-                            } else {
-                                var checkIsCorrect = false;
+                        }
 
-                                for (let i = 0; i < $(".is_correct").length; i++) {
-                                    if ($(".is_correct:eq(" + i + ")").prop('checked') == true) {
-                                        checkIsCorrect = true;
-                                        $(".is_correct:eq(" + i + ")").val($(".is_correct:eq(" + i + ")")
-                                            .next().find(
-                                                'input').val());
+                        if (checkIsCorrect) {
+                            var formData = $(this).serialize();
+                            $.ajax({
+                                url: "{{ route('updateQna') }}",
+                                type: "POST",
+                                data: formData,
+                                success: function(data) {
+                                    if (data.success == true) {
+                                        location.reload();
+                                    } else {
+                                        alert(data.msg)
                                     }
-
                                 }
+                            });
+                        } else {
+                            $(".editError").text("Please select anyone correct answer")
+                            setTimeout(function() {
+                                $(".editError").text("");
+                            }, 2000);
+                        }
+                    }
+                });
 
-                                if (checkIsCorrect) {
-                                    var formData = $(this).serialize();
-                                    $.ajax({
-                                        url: "{{ route('addQna') }}",
-                                        type: "POST",
-                                        data: formData,
-                                        success: function(data) {
-                                            if (data.success == true) {
-                                                location.reload();
-                                            } else {
-                                                alert(data.msg);
-                                            }
-                                        }
-                                    });
-                                } else {
-                                    $(".editError").text("Please select anyone correct answer")
-                                    setTimeout(function() {
-                                        $(".editError").text("");
-                                    }, 2000);
-                                }
-                            }
-                        });
-
-                    });
+            });
 
 
+            //remove Answers
 
+            $(document).on('click', '.removeAnswer', function() {
+                var ansId = $(this).attr('data-id');
 
+                $.ajax({
+                    url: "{{ route('deleteAns') }}",
+                    type: "GET",
+                    data: {
+                        id: ansId
+                    },
+                    success: function(data) {
+                        if (data.success == true) {
+                            console.log(data.msg);
+                        } else {
+                            alert(data.msg)
+                        }
+                    }
+                });
+            });
 
-                    //https://youtu.be/8jW3HKqYNKI?list=PLQDioScEMUhmJcpXoB-y3ugJkHuaZ-Pjv&t=1854
+        });
     </script>
 @endsection
