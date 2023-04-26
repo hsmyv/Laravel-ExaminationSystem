@@ -35,11 +35,11 @@
                         <td>{{ $exam->time }}</td>
                         <td>{{ $exam->attempt }}</td>
                         <td>
-                            <button class="btn btn-info editButton" data-id="{{ $exam->id }}" data-toggle="modal"
+                            <button type="button" class="btn btn-info editButton" data-id="{{ $exam->id }}" data-toggle="modal"
                                 data-target="#editExamModal">Edit</button>
                         </td>
                         <td>
-                            <button class="btn btn-info deleteButton" data-id="{{ $exam->id }}" data-toggle="modal"
+                            <button type="button" class="btn btn-info deleteButton" data-id="{{ $exam->id }}" data-toggle="modal"
                                 data-target="#deleteExamModal">Delete</button>
                         </td>
                     </tr>
@@ -93,6 +93,7 @@
                 </form>
             </div>
         </div>
+    </div>
 
 
         <!-- Edit Modal -->
@@ -111,9 +112,9 @@
                         <div class="modal-body">
                             <label for="">Exam Name</label>
                             <input type="hidden" name="exam_id" id="exam_id">
-                            <input type="text" name="name" placeholder="Enter Exam name" class="w-100" required>
+                            <input type="text" id="name" name="name" placeholder="Enter Exam name" class="w-100" required>
                             <br><br>
-                            <select name="subject_id" id="" required class="w-100">
+                            <select name="subject_id" id="subject_id" required class="w-100">
                                 <option value="">Select Subject</option>
                                 @if (count($subjects) > 0)
                                     @foreach ($subjects as $subject)
@@ -234,7 +235,7 @@
                             $('#subject_id').val(exam[0].subject_id);
                             $('#date').val(exam[0].date);
                             $('#time').val(exam[0].time);
-                            $('$attempt').val(examp[0].attempt);
+                            $('#attempt').val(exam[0].attempt);
                         } else {
                             alert(data.msg);
                         }

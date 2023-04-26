@@ -82,11 +82,11 @@ class AdminController extends Controller
         }
     }
 
-    public function updateSubject(Request $request)
+    public function updateExam(Request $request)
     {
         try {
             $exam = Exam::find($request->exam_id);
-            $exam->exam_name = $request->exam_name;
+            $exam->name = $request->name;
             $exam->subject_id = $request->subject_id;
             $exam->date = $request->date;
             $exam->time = $request->time;
@@ -146,7 +146,6 @@ class AdminController extends Controller
         return response()->json(['data' => $qna]);
     }
 
-
     public function deleteAns(Request $request)
     {
         Answer::where('id', $request->id)->delete();
@@ -199,6 +198,17 @@ class AdminController extends Controller
             return response()->json(['success' => false, 'msg' => $e->getMessage()]);
 
         }
+    }
+
+
+    public function deleteQna(Request $request)
+    {
+        Question::where('id', $request->id)->delete();
+        Answer::where('question_id', $request->id)->delete();
+
+        return response()->json(['success' => true, 'msg' => 'Q&A deleted successfully']);
+
+
     }
 
 

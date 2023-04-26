@@ -13,6 +13,7 @@
             <th>Question</th>
             <th>Answers</th>
             <th>Edit</th>
+            <th>Delete</th>
         </thead>
         <tbody>
             @if (count($questions) > 0)
@@ -27,6 +28,10 @@
                         <td>
                             <button class="btn btn-info editButton" data-id="{{ $question->id }}" data-toggle="modal"
                                 data-target="#editQnaModal">Edit</button>
+                        </td>
+                         <td>
+                            <button class="btn btn-info deleteButton" data-id="{{ $question->id }}" data-toggle="modal"
+                                data-target="#deleteQnaModal">Delete</button>
                         </td>
                     </tr>
                 @endforeach
@@ -99,8 +104,8 @@
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Update Q&A </button>
                     </div>
+                 </form>
             </div>
-            </form>
         </div>
     </div>
 
@@ -133,6 +138,36 @@
             </form>
         </div>
     </div>
+
+
+
+     <!-- Delete Qna Modal -->
+        <div class="modal fade" id="deleteQnaModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Delete Qna</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <form id="deleteQna">
+                            @csrf
+                            <div class="modal-body">
+                                <p>Are you Sure want to delete Question?</p>
+                                <input type="hidden" name="id" id="delete_qna_id">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Delete</button>
+                            </div>
+                        </form>
+                    </div>
+                </form>
+            </div>
+        </div>
     <script>
         $(document).ready(function() {
             $("#addQna").submit(function(e) {
@@ -276,7 +311,7 @@
                             if (qna['answers'][i]['is_correct'] == 1) {
                                 checked = 'checked';
                             }
-                            html = `
+                            html += `
                             <div class="row mt-2 editAnswers">
                                 <input type="radio" name="is_correct" class="edit_is_correct" ` + checked + `>
                                 <div class="col">
@@ -290,11 +325,11 @@
                                 ] + `">Remove</button>
                             </div>
                             `;
-
+                            }
                             $(".editModalAnswers").append(html);
 
 
-                        }
+
                     }
                 });
             });
@@ -368,6 +403,33 @@
                     }
                 });
             });
+
+
+            //delete Q&A
+
+            $('.deleteButton').click(function(){
+                var id = $(this).attr('data-id');
+                $('#delete_qna_id').val(id);
+            });
+
+            $('#deleteQna').submit(function(e){
+                e.preventDefault();
+
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    url: "{{route('deleteQna')}}",
+                    type:"POST",
+                    data:formData,
+                    success:function(data){
+                        if(data.success == true){
+                            location.reload();
+                        }else{
+                            alert(data.msg);
+                        }
+                    }
+                });
+            })
 
         });
     </script>
