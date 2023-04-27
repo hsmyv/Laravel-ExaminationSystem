@@ -7,7 +7,7 @@
         Add Q&A
     </button>
 
-    <table class="table">
+    <table class="table mt-5">
         <thead>
             <th>#</th>
             <th>Question</th>
@@ -70,8 +70,8 @@
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Add Q&A </button>
                     </div>
+                </form>
             </div>
-            </form>
         </div>
     </div>
 
@@ -95,7 +95,7 @@
                         <div class="row">
                             <div class="col">
                                 <input type="hidden" name="question_id" id="question_id" required>
-                                <input type="text" class="w-100" name="question" placeholder="Enter Question" required>
+                                <input type="text" class="w-100" id="question_name" name="question" placeholder="Enter Question" required>
                             </div>
                         </div>
                     </div>
@@ -290,7 +290,6 @@
 
             $(".editButton").click(function() {
                 var qid = $(this).attr('data-id');
-
                 $.ajax({
                     url: "{{ route('getQnaDetails') }}",
                     type: "GET",
