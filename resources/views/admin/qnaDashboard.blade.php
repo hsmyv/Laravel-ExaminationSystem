@@ -6,6 +6,9 @@
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addQnaModal">
         Add Q&A
     </button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#importQnaModal">
+        Import Q&A
+    </button>
 
     <table class="table mt-5">
         <thead>
@@ -162,6 +165,33 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary">Delete</button>
+                            </div>
+                        </form>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Import Q&a Modal -->
+        <div class="modal fade" id="importQnaModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Import Q&A</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <form id="importQna" enctype="multipart/form-data">
+                            @csrf
+                            <div class="modal-body">
+                               <input type="file" name="file" id="fileupload" required accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet ,application/vnd.ms.excel">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-info">Import Q&A</button>
                             </div>
                         </form>
                     </div>
@@ -418,6 +448,36 @@
                     url: "{{route('deleteQna')}}",
                     type:"POST",
                     data:formData,
+                    success:function(data){
+                        if(data.success == true){
+                            location.reload();
+                        }else{
+                            alert(data.msg);
+                        }
+                    }
+                });
+            })
+
+            //Import Q&A
+             $('#importQna').submit(function(e){
+                e.preventDefault();
+
+                let formData = new FormData();
+
+                formData.append("file", fileupload.files[0]);
+
+                $.ajaxSetup({
+                    headers:{
+                        "X-CSRF-TOKEN":"{{csrf_token()}}"
+                    }
+                });
+
+                $.ajax({
+                    url: "{{route('importQna')}}",
+                    type:"POST",
+                    data:formData,
+                    processData:false,
+                    contentType:false,
                     success:function(data){
                         if(data.success == true){
                             location.reload();

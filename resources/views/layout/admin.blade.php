@@ -33,6 +33,9 @@
                  <li class="{{setActiveHeader("admin.qna-ans")}}">
                     <a href="{{route('admin.qna-ans')}}"><span class="fa fa-question-circle mr-3"></span> Q&A</a>
                 </li>
+                 <li class="{{setActiveHeader("admin.studentDashboard")}}">
+                    <a href="{{route('admin.studentDashboard')}}"><span class="fa fa-graduation-cap mr-3"></span>Students</a>
+                </li>
                 <li >
                     <a href="/logout"><span class="fa fa-user mr-3"></span> Logout</a>
                 </li>
