@@ -26,11 +26,11 @@
                                 data-target="#showAnsModal">See Answers</a>
                         </td>
                         <td>
-                            <button class="btn btn-info editButton" data-id="{{ $question->id }}" data-toggle="modal"
+                            <button type="button" class="btn btn-info editButton" data-id="{{ $question->id }}" data-toggle="modal"
                                 data-target="#editQnaModal">Edit</button>
                         </td>
                          <td>
-                            <button class="btn btn-info deleteButton" data-id="{{ $question->id }}" data-toggle="modal"
+                            <button type="button" class="btn btn-info deleteButton" data-id="{{ $question->id }}" data-toggle="modal"
                                 data-target="#deleteQnaModal">Delete</button>
                         </td>
                     </tr>
@@ -89,7 +89,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="addQna">
+                <form id="editQna">
                     @csrf
                     <div class="modal-body editModalAnswers">
                         <div class="row">
@@ -237,6 +237,7 @@
             });
 
 
+            //Show Answers
             $(".ansButton").click(function() {
                 var questions = @json($questions);
                 var qid = $(this).attr('data-id');
@@ -249,16 +250,16 @@
                             if (questions[i]['answers'][j]['is_correct'] == 1) {
                                 is_correct = 'Yes';
                             }
-
                             html += `
                                     <tr>
                                         <td>` + (j + 1) + `</td>
-                                        <td> ` + questions[i]['answers'][j]['answers'] + ` </td>
+                                        <td> ` + questions[i]['answers'][j]['answer'] + ` </td>
                                         <td> ` + is_correct + `</td>
                                     </tr>
                                 `;
 
                         }
+
 
                         break;
                     }
@@ -290,18 +291,20 @@
 
             $(".editButton").click(function() {
                 var qid = $(this).attr('data-id');
+                var url = "{{route('getQnaDetails', 'id')}}";
+                url = url.replace('id', qid);
                 $.ajax({
-                    url: "{{ route('getQnaDetails') }}",
+                    url: url,
                     type: "GET",
-                    data: {
-                        qid: qid
-                    },
                     success: function(data) {
+                        if(data.success == true){
                         var qna = data.data[0];
                         $("#question_id").val(qna['id']);
-                        $("#question").val(qna['question']);
+                        $("#question_name").val(qna['question']);
                         $(".editAnswers").remove();
-
+                        }else{
+                            alert(data.msg);
+                        }
                         var html = '';
 
                         for (let i = 0; i < qna['answers'].length; i++) {
@@ -316,12 +319,10 @@
                                 <div class="col">
                                     <input type="text" class="w-100" name="answers[` + qna['answers'][i]['id'] +
                                 `]" placeholder="Enter Answer" value="` + qna['answers'][i][
-                                    'answers'
+                                    'answer'
                                 ] + `" required>
                                 </div>
-                                <button class="btn btn-danger removeButton removeAnswer" data-id"` + qna['answers'][i][
-                                    'id'
-                                ] + `">Remove</button>
+                                <button class="btn btn-danger removeButton removeAnswer" data-id="` + qna['answers'][i]['id'] + `">Remove</button>
                             </div>
                             `;
                             }
@@ -334,8 +335,7 @@
             });
 
             //Update Qna
-            $(document).ready(function() {
-                $("#editQna ").submit(function(e) {
+                $("#editQna").submit(function(e) {
                     e.preventDefault();
                     if ($(".editAnswers").length < 2) {
                         $(".editError").text("Please add minimum two answers.")
@@ -378,8 +378,6 @@
                         }
                     }
                 });
-
-            });
 
 
             //remove Answers

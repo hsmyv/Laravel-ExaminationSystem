@@ -140,10 +140,10 @@ class AdminController extends Controller
         }
     }
 
-    public function getQnaDetails(Request $request)
+    public function getQnaDetails($id)
     {
-        $qna = Question::where('id', $request->qid)->with('answers')->get();
-        return response()->json(['data' => $qna]);
+        $qna = Question::where('id', $id)->with('answers')->get();
+        return response()->json(['success' => true, 'data' => $qna]);
     }
 
     public function deleteAns(Request $request)
