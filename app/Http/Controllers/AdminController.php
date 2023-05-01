@@ -9,6 +9,7 @@ use App\Models\Subject;
 use Illuminate\Http\Request;
 
 use App\Imports\QnaImport;
+use App\Models\QnaExam;
 use App\Models\User;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Hash;
@@ -26,7 +27,6 @@ class AdminController extends Controller
                 'subject' => $request->subject
             ]);
             return response()->json(['success' => true, 'msg' => 'Subject added Successfully!']);
-
         } catch (\Throwable $e) {
             return response()->json(['success' => false, 'msg' => $e->getMessage()]);
         }
@@ -48,7 +48,7 @@ class AdminController extends Controller
     public function deleteSubject(Request $request)
     {
         try {
-            Subject::where('id',$request->id)->delete();
+            Subject::where('id', $request->id)->delete();
 
             return response()->json(['success' => true, 'msg' => 'Subject deleted Successfully!']);
         } catch (\Throwable $e) {
@@ -60,7 +60,7 @@ class AdminController extends Controller
     {
         $subjects = Subject::all();
         $exams = Exam::with('subjects')->get();
-        return view('admin.exam-dashboard', ['subjects' => $subjects , 'exams' => $exams]);
+        return view('admin.exam-dashboard', ['subjects' => $subjects, 'exams' => $exams]);
     }
 
     public function addExam(Request $request)
@@ -85,7 +85,7 @@ class AdminController extends Controller
     {
         try {
             $exam = Exam::where('id', $id)->get();
-            return response()->json(['success'=> true, 'data' => $exam]);
+            return response()->json(['success' => true, 'data' => $exam]);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'msg' => $e->getMessage()]);
         }
@@ -129,10 +129,10 @@ class AdminController extends Controller
     public function addQna(Request $request)
     {
         try {
-           $questionId = Question::insertGetId(['question' => $request->question]);
+            $questionId = Question::insertGetId(['question' => $request->question]);
             foreach ($request->answers as $answer) {
                 $is_correct = 0;
-                if($request->is_correct == $answer){
+                if ($request->is_correct == $answer) {
                     $is_correct = 1;
                 }
 
@@ -170,13 +170,10 @@ class AdminController extends Controller
             ]);
 
             // old answers update
-            if(isset($request->answers))
-            {
-                foreach($request->answers as $key => $value)
-                {
+            if (isset($request->answers)) {
+                foreach ($request->answers as $key => $value) {
                     $is_correct = 0;
-                    if($request->is_correct  == $value)
-                    {
+                    if ($request->is_correct  == $value) {
                         $is_correct = 1;
                     }
                     Answer::where('id', $key)->update([
@@ -202,10 +199,8 @@ class AdminController extends Controller
                 }
             }
             return response()->json(['success' => true, 'msg' => 'Q&A updated succesfully!']);
-
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'msg' => $e->getMessage()]);
-
         }
     }
 
@@ -242,8 +237,8 @@ class AdminController extends Controller
             $password = Str::random(8);
             User::insert([
                 'name' => $request->name,
-                'email'=> $request->email,
-                'password'=> Hash::make($password),
+                'email' => $request->email,
+                'password' => Hash::make($password),
             ]);
 
             $url = URL::to('/');
@@ -253,9 +248,9 @@ class AdminController extends Controller
             $data['password'] = $password;
             $data['title'] = "Student Registration on OES";
 
-            Mail::send('mail.registrationMail', ['data'=> $data], function($message) use ($data){
+            /* Mail::send('mail.registrationMail', ['data'=> $data], function($message) use ($data){
                 $message->to($data['email'])->subject($data['title']);
-            });
+            });*/
             return response()->json(['success' => true, 'msg' => "Student added Successfully"]);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'msg' => $e->getMessage()]);
@@ -272,7 +267,7 @@ class AdminController extends Controller
             $user->save();
 
             //Send Mail
-           /* $url = URL::to('/');
+            /* $url = URL::to('/');
             $data['url'] = $url;
             $data['name'] = $request->name;
             $data['email'] = $request->email;
@@ -298,4 +293,48 @@ class AdminController extends Controller
         }
     }
 
+    public function getQuestions(Request $request)
+    {
+        try {
+            $questions = Question::all();
+            if(count($questions) > 0){
+                $data = [];
+                $counter = 0;
+
+                foreach ($questions as $question) {
+                    $qnaExam = QnaExam::where(['exam_id' => $request->exam_id, 'question_id' => $request->id])->get();
+                    if(count($qnaExam) == 0){
+                        $data[$counter]['id'] = $question->id;
+                        $data[$counter]['questions'] = $question->question;
+                        $counter++;
+                    }
+                }
+                return response()->json(['success' => true, 'msg' => "Questions data!", "data" => $data]);
+            }
+            else
+            {
+                return response()->json(['success' => false, 'msg' => "Questions not found"]);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'msg' => $e->getMessage()]);
+        }
+    }
+
+    public function addQuestions(Request $request)
+    {
+        try {
+            if(isset($request->questions_ids)){
+                foreach ($request->questions_ids as $qid) {
+                    QnaExam::insert([
+                        'exam_id' => $request->exam_id,
+                        'question_id' => $qid
+                    ]);
+                }
+            }
+            return response()->json(['success' => true, 'msg' => "Questions added successfully!"]);
+
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'msg' => $e->getMessage()]);
+        }
+    }
 }
