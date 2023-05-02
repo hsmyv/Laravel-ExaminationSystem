@@ -20,6 +20,7 @@
                 <th>Time</th>
                 <th>Attempt</th>
                 <th>Add Questions</th>
+                <th>Show </th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
@@ -38,6 +39,10 @@
                         <td>
                             <a href="" class="addQuestion" data-id="{{ $exam->id }}" data-toggle="modal"
                                 data-target="#addQnaModal">Add Questions</a>
+                        </td>
+                        <td>
+                            <a href="" class="seeQuestions" data-id="{{ $exam->id }}" data-toggle="modal"
+                                data-target="#seeQnaModal">See Questions</a>
                         </td>
                         <td>
                             <button type="button" class="btn btn-info editButton" data-id="{{ $exam->id }}"
@@ -99,6 +104,37 @@
         </div>
     </div>
 
+    <!-- See Questions Modal -->
+    <div class="modal fade" id="seeQnaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Add Q&A</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <div class="modal-body">
+                        <table class="table">
+                            <thead>
+                                <th>S.No</th>
+                                <th>Question</th>
+                                <th>Delete</th>
+                            </thead>
+                            <tbody class="seeQuestionsTable">
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Exam</button>
+                    </div>
+            </div>
+        </div>
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="addExamModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
@@ -125,7 +161,8 @@
                             @endif
                         </select>
                         <br><br>
-                        <input type="date" name="date" class="w-100" required min="@php echo date('Y-m-d'); @endphp">
+                        <input type="date" name="date" class="w-100" required
+                            min="@php echo date('Y-m-d'); @endphp">
                         <br><br>
                         <input type="time" name="time" class="w-100" required>
                         <br><br>
@@ -372,6 +409,60 @@
                             alert(data.msg);
                         }
                     }
+                });
+            });
+
+
+            $('.seeQuestions').click(function(){
+                var id  = $(this).attr('data-id');
+                $.ajax({
+                    url: "{{route('getExamQuestions')}}",
+                    type: "GET",
+                    data:{exam_id:id},
+                    success: function(data){
+                        var html = '';
+                        var questions = data.data;
+                        if(questions.length > 0)
+                        {
+                            for (let i = 0; i < questions.length; i++) {
+                                html +=`
+                                    <tr>
+                                        <td> `+(i+1)+` </td>
+                                        <td> ` + questions[i]['questions'][0]['question'] + ` </td>
+                                         <td><button class="btn btn-danger deleteQuestion" data-id="`+questions[i]['id']+`">Delete</button></td>
+                                    </tr>
+                                `;
+                            }
+                        }
+                        else{
+                            html += `
+                                <tr>
+                                    <td colspan="1">Questions not available!</td>
+                                </tr>
+                            `;
+                        }
+                        $('.seeQuestionsTable').html(html);
+                    }
+                });
+            });
+
+            //delete quetion
+            $(document).on('click', '.deleteQuestion', function(){
+                var id = $(this).attr('data-id');
+                var obj = $(this);
+                $.ajax({
+                    url: "{{route('deleteExamQuestions')}}",
+                    type: "GET",
+                    data: {id:id},
+                    success:function(data){
+                        if(data.success == true)
+                        {
+                            obj.parent().parent().remove();
+                        }else{
+                            alert(data.msg);
+                        }
+                    }
+
                 });
             });
         });

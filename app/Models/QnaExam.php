@@ -13,4 +13,15 @@ class QnaExam extends Model
         'exam_id',
         'question_id'
     ];
+
+
+    public function questions()
+    {
+        return $this->hasMany(Question::class, 'id', 'question_id');
+    }
+
+    public function answers()
+    {
+        return $this->hasMany(Answer::class, 'id', 'question_id');
+    }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ExamController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -71,11 +72,14 @@ Route::group(['middleware' => ['web', 'checkAdmin']], function () {
     //qna exams routing
     Route::get('/get-questions', [AdminController::class, 'getQuestions'])->name('getQuestions');
     Route::post('/add-questions', [AdminController::class, 'addQuestions'])->name('addQuestions');
+    Route::get('/get-exam-questions', [AdminController::class, 'getExamQuestions'])->name('getExamQuestions');
+    Route::get('/delete-exam-questions', [AdminController::class, 'deleteExamQuestions'])->name('deleteExamQuestions');
 
 });
 
 Route::group(['middleware' => ['web', 'checkStudent']], function () {
     Route::get('/dashboard', [AuthController::class, 'loadDashboard'])->name('student.dashboard');
+    Route::get('/exam/{id}', [ExamController::class, 'loadExamDashboard'])->name('student.examDashbaord');
 });
 
 Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('forgotPassword');

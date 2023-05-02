@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\studentRegisterRequest;
+use App\Models\Exam;
 use App\Models\PasswordReset;
 use App\Models\Subject;
 use App\Models\User;
@@ -71,7 +72,9 @@ class AuthController extends Controller
 
     public function loadDashboard()
     {
-        return view('student.dashboard');
+        $exams = Exam::with('subjects')->orderBy('date')->get();
+
+        return view('student.dashboard', ['exams' => $exams]);
     }
 
     public function adminDashboard()

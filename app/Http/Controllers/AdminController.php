@@ -66,12 +66,14 @@ class AdminController extends Controller
     public function addExam(Request $request)
     {
         try {
+            $unique_id = uniqid('exid');
             Exam::insert([
                 'name' => $request->name,
                 'subject_id' => $request->subject_id,
                 'date'      => $request->date,
                 'time'       => $request->time,
-                'attempt'    => $request->attempt
+                'attempt'    => $request->attempt,
+                'entrance_id' => $unique_id
             ]);
 
             return response()->json(['success' => true, 'msg' => 'Exam added Successfully!']);
@@ -337,4 +339,28 @@ class AdminController extends Controller
             return response()->json(['success' => false, 'msg' => $e->getMessage()]);
         }
     }
+
+
+    public function getExamQuestions(Request $request)
+    {
+        try {
+            $data = QnaExam::where('exam_id', $request->exam_id)->with('questions')->get();
+            return response()->json(['success' => true, 'msg' => 'Questions details!', 'data' => $data]);
+
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'msg' => $e->getMessage()]);
+
+        }
+    }
+
+    public function deleteExamQuestions(Request $request)
+    {
+        try {
+            QnaExam::where('id', $request->id)->delete();
+            return response()->json(['success' => true, 'msg' => 'Questions deleted!']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'msg' => $e->getMessage()]);
+        }
+    }
+
 }

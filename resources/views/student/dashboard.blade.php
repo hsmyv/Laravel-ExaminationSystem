@@ -1,49 +1,59 @@
-<!doctype html>
-<html lang="en">
+@extends('layout.student')
 
-<head>
-    <title>Student dashboard</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+@section('space-work')
+     <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Exam Name</th>
+                <th>Subject Name</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Total Attempt</th>
+                <th>Available Attempt</th>
+                <th>Copy Link </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(count($exams) > 0)
+                @php $count = 1; @endphp
+                @foreach ($exams as $exam )
+                    <tr>
+                        <td>{{$count++}}</td>
+                        <td>{{$exam->exam_name}}</td>
+                        <td>{{$exam->subjects[0]['subject']}}</td>
+                        <td>{{$exam->date}}</td>
+                        <td>{{$exam->time}} Hrs</td>
+                        <td>{{$exam->attempt}} Time</td>
+                        <td></td>
+                        <td><a href="" data-code="{{$exam->entrance_id}}" class="copy"><i class="fa fa-copy"></i></a></td>
+                    </tr>
+                @endforeach
+            @else
+            <tr>
+                <td colspan="8">No Exams Available!</td>
+            </tr>
+            @endif
+        </tbody>
+     </table>
 
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+     <script>
+        $(document).ready(function(){
+            $('.copy').click(function(){
+                $(this).parent().prepend('<span class="copied_text">Copied</span>');
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/style.css">
-</head>
+                var code = $(this).attr('data-code');
+                var url  = "{{URL::to('/')}}/exam/"+code;
+                var $temp = $("<input>");
+                $("body").append($temp);
+                $temp.val(url).select();
+                document.execCommand("copy");
 
-<body>
-
-    <div class="wrapper d-flex align-items-stretch">
-        <nav id="sidebar">
-            <div class="custom-menu">
-                <button type="button" id="sidebarCollapse" class="btn btn-primary">
-                    <i class="fa fa-bars"></i>
-                    <span class="sr-only">Toggle Menu</span>
-                </button>
-            </div>
-            <h1><a href="index.html" class="logo">Student dashboard</a></h1>
-            <ul class="list-unstyled components mb-5">
-                <li class="active">
-                    <a href="#"><span class="fa fa-home mr-3"></span> Homepage</a>
-                </li>
-                <li>
-                    <a href="/logout"><span class="fa fa-user mr-3"></span> Logout</a>
-                </li>
-
-            </ul>
-
-        </nav>
-
-        <!-- Page Content  -->
-        <div id="content" class="p-4 p-md-5 pt-5">
-            @yield('space-work')
-    </div>
-
-    <script src="{{asset('js/jquery.min.js')}}"></script>
-    <script src="{{asset('js/popper.js')}}"></script>
-    <script src="{{asset('js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('js/main.js')}}"></script>
-</body>
-
-</html>
+                $temp.remove();
+                setTimeout(() => {
+                    $('.copied_text').remove();
+                }, 1000);
+            });
+        });
+     </script>
+@endsection
