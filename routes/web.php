@@ -80,6 +80,7 @@ Route::group(['middleware' => ['web', 'checkAdmin']], function () {
 Route::group(['middleware' => ['web', 'checkStudent']], function () {
     Route::get('/dashboard', [AuthController::class, 'loadDashboard'])->name('student.dashboard');
     Route::get('/exam/{id}', [ExamController::class, 'loadExamDashboard'])->name('student.examDashbaord');
+    Route::post('/exam-submit', [ExamController::class, 'examSubmit'])->name('examSubmit');
 });
 
 Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('forgotPassword');

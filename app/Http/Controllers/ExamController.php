@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Exam;
+use App\Models\ExamAnswer;
+use App\Models\ExamAttempt;
 use App\Models\QnaExam;
 use Illuminate\Http\Request;
 
@@ -10,13 +12,18 @@ class ExamController extends Controller
 {
     public function loadExamDashboard($id)
     {
+
         $qnaExam = Exam::where('entrance_id', $id)->with('getQnaExam')->get();
 
         if(count($qnaExam) > 0)
         {
-            if($qnaExam[0]['date'] == date('Y-m-d')){
+            $attemptCount = ExamAttempt::where(['exam_id' => $qnaExam[0]['id'], 'user_id' => auth()->user()->id])->count();
+            if($attemptCount >= $qnaExam[0]['attempt']){
+                return view('student.exam-dashboard', ['success' => false, 'msg' => 'Your exam has been completed', 'exam' => $qnaExam]);
+            }
+            else if($qnaExam[0]['date'] == date('Y-m-d')){
                 if (count($qnaExam[0]['getQnaExam']) > 0) {
-                    $qna = QnaExam::where('exam_id', $qnaExam[0]['id'])->with('questions', 'answers')->get();
+                    $qna = QnaExam::where('exam_id', $qnaExam[0]['id'])->with('questions', 'answers')->inRandomOrder()->get();
                     return view('student.exam-dashboard', ['success' => true, 'exam' => $qnaExam, 'qna' => $qna]);
                 }
                 else{
@@ -33,5 +40,32 @@ class ExamController extends Controller
         {
             return view('404');
         }
+    }
+
+
+    public function examSubmit(Request $request)
+    {
+        $attempt_id = ExamAttempt::insertGetId([
+            'exam_id' => $request->exam_id,
+            'user_id' => auth()->user()->id
+        ]);
+
+        $qcount = count($request->q);
+
+        if($qcount > 0)
+        {
+            for ($i=0; $i < $qcount; $i++) {
+                if(!empty($request->input('ans_'. ($i+1)))){
+                     ExamAnswer::insert([
+                    'attempt_id' => $attempt_id,
+                    'question_id' => $request->q[$i],
+                    'answer_id' => request()->input('ans_' . ($i + 1))
+                    ]);
+                }
+
+            }
+        }
+
+        return view('thank-you');
     }
 }
