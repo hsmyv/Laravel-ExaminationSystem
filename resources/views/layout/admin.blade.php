@@ -37,11 +37,17 @@
                  <li class="{{setActiveHeader("admin.exam")}}">
                     <a href="{{route('admin.exam')}}"><span class="fa fa-tasks mr-3"></span> Exams</a>
                 </li>
+                 <li class="{{setActiveHeader("admin.marks")}}">
+                    <a href="{{route('admin.marks')}}"><span class="fa fa-check mr-3"></span> Marks</a>
+                </li>
                  <li class="{{setActiveHeader("admin.qna-ans")}}">
                     <a href="{{route('admin.qna-ans')}}"><span class="fa fa-question-circle mr-3"></span> Q&A</a>
                 </li>
                  <li class="{{setActiveHeader("admin.studentDashboard")}}">
                     <a href="{{route('admin.studentDashboard')}}"><span class="fa fa-graduation-cap mr-3"></span>Students</a>
+                </li>
+                  <li class="{{setActiveHeader("admin.reviewExams")}}">
+                    <a href="{{route('admin.reviewExams')}}"><span class="fa fa-file-text-o mr-3"></span>Exam Review</a>
                 </li>
                 <li >
                     <a href="/logout"><span class="fa fa-user mr-3"></span> Logout</a>

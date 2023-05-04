@@ -9,6 +9,7 @@ use App\Models\Subject;
 use Illuminate\Http\Request;
 
 use App\Imports\QnaImport;
+use App\Models\ExamAttempt;
 use App\Models\QnaExam;
 use App\Models\User;
 use Maatwebsite\Excel\Facades\Excel;
@@ -361,6 +362,31 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'msg' => $e->getMessage()]);
         }
+    }
+
+    public function marksDashboard()
+    {
+        $exams = Exam::with('getQnaExam')->get();
+        return view('admin.marksDashboard', compact('exams'));
+    }
+
+    public function updateMarks(Request $request)
+    {
+        try {
+            Exam::where('id', $request->exam_id)->update([
+                'marks' => $request->marks
+            ]);
+            return response()->json(['success' => true, 'msg' => 'Marks Updated!']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'msg' => $e->getMessage()]);
+        }
+    }
+
+    public function reviewExams()
+    {
+        $attempts = ExamAttempt::with(['user', 'exam'])->orderBy('id', 'desc')->get();
+
+        return view('admin.review-exams', compact('attempts'));
     }
 
 }
