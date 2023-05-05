@@ -81,8 +81,14 @@ Route::group(['middleware' => ['web', 'checkAdmin']], function () {
 
     //exam review routes
     Route::get('/admin/review-exams', [AdminController::class, 'reviewExams'])->name('admin.reviewExams');
+    Route::get('/get-reviewed-qna', [AdminController::class, 'reviewQna'])->name('reviewQna');
+
+    Route::post('/approved-qna', [AdminController::class, 'approvedQna'])->name('approvedQna');
+
 
 });
+
+
 
 Route::group(['middleware' => ['web', 'checkStudent']], function () {
     Route::get('/dashboard', [AuthController::class, 'loadDashboard'])->name('student.dashboard');

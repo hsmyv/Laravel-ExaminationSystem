@@ -9,6 +9,7 @@ use App\Models\Subject;
 use Illuminate\Http\Request;
 
 use App\Imports\QnaImport;
+use App\Models\ExamAnswer;
 use App\Models\ExamAttempt;
 use App\Models\QnaExam;
 use App\Models\User;
@@ -374,7 +375,8 @@ class AdminController extends Controller
     {
         try {
             Exam::where('id', $request->exam_id)->update([
-                'marks' => $request->marks
+                'marks' => $request->marks,
+                'pass_marks' => $request->pass_marks
             ]);
             return response()->json(['success' => true, 'msg' => 'Marks Updated!']);
         } catch (\Exception $e) {
@@ -389,4 +391,57 @@ class AdminController extends Controller
         return view('admin.review-exams', compact('attempts'));
     }
 
+    public function reviewQna(Request $request)
+    {
+        try {
+            $attemptData  = ExamAnswer::where('attempt_id', $request->attempt_id)->with(['question', 'answers'])->get();
+            return response()->json(['success' => true,'data' => $attemptData]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false,'msg' => $e->getMessage()]);
+        }
+    }
+
+    public function approvedQna(Request $request)
+    {
+        try {
+            $attemptId = $request->attempt_id;
+
+            $examData = ExamAttempt::where('id', $attemptId)->with(['user','exam'])->get();
+
+            $marks = $examData[0]['exam']['marks'];
+
+            $attemptData = ExamAnswer::where('attempt_id', $attemptId)->with('answers')->get();
+            $totalMarks = 0;
+
+            if(count($attemptData) > 0)
+            {
+                foreach ($attemptData as $attempt) {
+                    if($attempt->answers->is_correct == 1){
+                        $totalMarks += $marks;
+                    }
+                }
+            }
+            ExamAttempt::where('id', $attemptId)->update([
+                'status' => 1,
+                'marks'  => $totalMarks
+            ]);
+
+            $url = URL::to('/');
+            $data['url'] = $url.'/results';
+            $data['name'] = $examData[0]['user']['name'];
+            $data['email'] = $examData[0]['user']['email'];
+            $data['name'] = $examData[0]['exam']['name'];
+            $data['title'] = $examData[0]['exam']['name'].'Result';
+
+           /* Mail::send('mail.result-mail', ['data' => $data], function ($message) use ($data){    //I haven't check this code yet
+                $message->to($data['email'])->subject($data['title']);
+            });*/
+
+
+
+            return response()->json(['success' => true,'msg' => 'Approved Successfully', 'data' => $marks]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false,'msg' => $e->getMessage()]);
+        }
+    }
 }
