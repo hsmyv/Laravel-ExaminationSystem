@@ -68,4 +68,21 @@ class ExamController extends Controller
 
         return view('thank-you');
     }
+
+    public function resultsDashboard()
+    {
+        $attempts = ExamAttempt::where('user_id', Auth()->user()->id)->with('exam')->orderBy('updated_at')->get();
+        return view('student.results', compact('attempts'));
+    }
+
+    public function reviewQna(Request $request)
+    {
+        try {
+            $attemptData = ExamAnswer::where('attempt_id', $request->attempt_id)->with(['question', 'answers'])->get();
+            return response()->json(['success' => true, 'msg' =>'Q&A Data', 'data' => $attemptData]);
+        } catch (\Exception $e) {
+            return response()->json(['success'=> false, 'msg' => $e->getMessage()]);
+        }
+    }
+
 }

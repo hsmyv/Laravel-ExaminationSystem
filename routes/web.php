@@ -94,6 +94,11 @@ Route::group(['middleware' => ['web', 'checkStudent']], function () {
     Route::get('/dashboard', [AuthController::class, 'loadDashboard'])->name('student.dashboard');
     Route::get('/exam/{id}', [ExamController::class, 'loadExamDashboard'])->name('student.examDashbaord');
     Route::post('/exam-submit', [ExamController::class, 'examSubmit'])->name('examSubmit');
+
+    Route::get('/results', [ExamController::class, 'resultsDashboard'])->name('resultsDashboard');
+    Route::get('/review-student-qna', [ExamController::class, 'reviewQna'])->name('resultStudentQna');
+
+
 });
 
 Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('forgotPassword');
