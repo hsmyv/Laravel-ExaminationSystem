@@ -67,6 +67,11 @@
                                 <input type="text" class="w-100" name="question" placeholder="Enter Question" required>
                             </div>
                         </div>
+                         <div class="row mt-2">
+                            <div class="col">
+                                <textarea name="explanation" class="w-100" placeholder="Enter your explanation" required></textarea>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <span class="error" style="color:red;"></span>
