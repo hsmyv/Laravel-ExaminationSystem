@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExamController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -98,6 +99,8 @@ Route::group(['middleware' => ['web', 'checkStudent']], function () {
 
     Route::get('/results', [ExamController::class, 'resultsDashboard'])->name('resultsDashboard');
     Route::get('/review-student-qna', [ExamController::class, 'reviewQna'])->name('resultStudentQna');
+    Route::get('/paid-exams', [StudentController::class, 'paidExamDashboard'])->name('paidExamDashboard');
+
 
 
 });

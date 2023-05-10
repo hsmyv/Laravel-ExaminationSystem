@@ -27,6 +27,9 @@
                 <li class="{{setActiveHeader("admin.dashboard")}}">
                     <a href="{{route('student.dashboard')}}"><span class="fa fa-home mr-3"></span>Dashboard</a>
                 </li>
+                 <li class="{{setActiveHeader("paidExamDashboard")}}">
+                    <a href="{{route('paidExamDashboard')}}"><span class="fa fa-tasks mr-3"></span>Paid Exams</a>
+                </li>
                  <li class="{{setActiveHeader("resultsDashboard")}}">
                     <a href="{{route('resultsDashboard')}}"><span class="fa fa-list-alt mr-3"></span>Results</a>
                 </li>

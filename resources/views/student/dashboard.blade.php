@@ -1,6 +1,7 @@
 @extends('layout.student')
 
 @section('space-work')
+<h2>Free Exams</h2>
      <table class="table">
         <thead>
             <tr>
@@ -25,7 +26,7 @@
                         <td>{{$exam->subjects[0]['subject']}}</td>
                         <td>{{$exam->date}}</td>
                         <td>{{$exam->time}} Hrs</td>
-                        @if ($exam->attempt <= 1)   
+                        @if ($exam->attempt <= 1)
                             <td>{{$exam->attempt}} time</td>
                         @else
                             <td>{{$exam->attempt}} times</td>
