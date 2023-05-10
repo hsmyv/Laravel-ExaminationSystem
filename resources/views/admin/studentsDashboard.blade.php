@@ -4,7 +4,8 @@
     <h2 class="mb-4">Students</h2>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStudentModal">
         Add Student
-    </button>
+        </button>
+        <a href="{{route('exportStudents')}}" class="btn btn-warning">Export Students</a>
 
     <table class="table mt-5">
         <thead>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportStudent;
 use App\Models\Answer;
 use App\Models\Exam;
 use App\Models\Question;
@@ -68,6 +69,13 @@ class AdminController extends Controller
     public function addExam(Request $request)
     {
         try {
+
+            $plan = $request->plan;
+            $prices = null;
+
+            if(isset($request->azn) && isset($request->usd)){
+                $prices = json_encode(['AZN' => $request->azn, 'USD' => $request->usd]);
+            }
             $unique_id = uniqid('exid');
             Exam::insert([
                 'name' => $request->name,
@@ -75,7 +83,9 @@ class AdminController extends Controller
                 'date'      => $request->date,
                 'time'       => $request->time,
                 'attempt'    => $request->attempt,
-                'entrance_id' => $unique_id
+                'entrance_id' => $unique_id,
+                'plan'       => $plan,
+                'prices'     => $prices
             ]);
 
             return response()->json(['success' => true, 'msg' => 'Exam added Successfully!']);
@@ -133,7 +143,13 @@ class AdminController extends Controller
     public function addQna(Request $request)
     {
         try {
-            $questionId = Question::insertGetId(['question' => $request->question]);
+
+            $explanation = null;
+            if(isset($request->explanation)){
+                $explanation = $request->explanation;
+            }
+
+            $questionId = Question::insertGetId(['question' => $request->question, 'explanation' => $explanation]);
             foreach ($request->answers as $answer) {
                 $is_correct = 0;
                 if ($request->is_correct == $answer) {
@@ -295,6 +311,12 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'msg' => $e->getMessage()]);
         }
+    }
+
+    //Export Students
+    public function exportStudents()
+    {
+        return Excel::download(new ExportStudent, 'students.xlsx');
     }
 
     public function getQuestions(Request $request)
