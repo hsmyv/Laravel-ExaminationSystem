@@ -49,7 +49,7 @@
                             @if ($exam->plan != null)
                                 @php $planPrices = json_decode($exam->prices); @endphp
                                 @foreach ($planPrices as $key => $price)
-                                        <span>{{$key}} {{$price}}</span>
+                                    <span>{{ $key }} {{ $price }}</span>
                                 @endforeach
                             @else
                                 <span>Not Prices</span>
@@ -134,23 +134,23 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                    <div class="modal-body">
-                        <table class="table">
-                            <thead>
-                                <th>S.No</th>
-                                <th>Question</th>
-                                <th>Delete</th>
-                            </thead>
-                            <tbody class="seeQuestionsTable">
+                <div class="modal-body">
+                    <table class="table">
+                        <thead>
+                            <th>S.No</th>
+                            <th>Question</th>
+                            <th>Delete</th>
+                        </thead>
+                        <tbody class="seeQuestionsTable">
 
-                            </tbody>
-                        </table>
+                        </tbody>
+                    </table>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add Exam</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add Exam</button>
+                </div>
             </div>
         </div>
     </div>
@@ -241,6 +241,14 @@
                         <br><br>
                         <input type="number" min="1" id="attempt" name="attempt" class="w-100"
                             placeholder="Enter Exam Attempt Time" required>
+                        <br><br>
+                        <select name="plan" id="plan" required class="w-100 mb-4 plan">
+                            <option value="">Select Plan</option>
+                            <option value="0">Free</option>
+                            <option value="1">Paid</option>
+                        </select>
+                        <input type="number" placeholder="In AZN" id="azn" name="azn" disabled>
+                        <input type="number" placeholder="In USD" id="usd" name="usd" disabled>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -336,18 +344,42 @@
             var url = "{{ route('getExamDetail', 'id') }}";
             url = url.replace('id', id);
 
+            $('#azn').val('');
+            $('#usd').val('');
+
             $.ajax({
-                url: url,
-                type: "GET",
-                success: function(data) {
-                    if (data.success == true) {
-                        var exam = data.data;
-                        $('#name').val(exam[0].name);
-                        $('#subject_id').val(exam[0].subject_id);
-                        $('#date').val(exam[0].date);
-                        $('#time').val(exam[0].time);
-                        $('#attempt').val(exam[0].attempt);
-                    } else {
+                    url: url,
+                    type: "GET",
+                    success: function(data) {
+                        if (data.success == true) {
+                            var exam = data.data;
+                            $('#name').val(exam[0].name);
+                            $('#subject_id').val(exam[0].subject_id);
+                            $('#date').val(exam[0].date);
+                            $('#time').val(exam[0].time);
+                            $('#attempt').val(exam[0].attempt);
+
+                            $('#plan').val(exam[0].plan);
+
+                            if (exam[0].plan == 1) {
+                                let prices = JSON.parse(exam[0].prices);
+                                $('#azn').val(prices.AZN);
+                                $('#usd').val(prices.USD);
+
+                                $('#azn').prop('disabled', false);
+                                $('#usd').prop('disabled', false);
+
+                                $('#azn').attr('required', 'required');
+                                $('#usd').attr('required', 'required');
+                            } else {
+                                $('#azn').prop('disabled', true);
+                                $('#usd').prop('disabled', true);
+
+                                $('#azn').removeAttr('required');
+                                $('#usd').removeAttr('required');
+                            }
+                        }
+                    else {
                         alert(data.msg);
                     }
                 }
@@ -440,28 +472,30 @@
             });
 
 
-            $('.seeQuestions').click(function(){
-                var id  = $(this).attr('data-id');
+            $('.seeQuestions').click(function() {
+                var id = $(this).attr('data-id');
                 $.ajax({
-                    url: "{{route('getExamQuestions')}}",
+                    url: "{{ route('getExamQuestions') }}",
                     type: "GET",
-                    data:{exam_id:id},
-                    success: function(data){
+                    data: {
+                        exam_id: id
+                    },
+                    success: function(data) {
                         var html = '';
                         var questions = data.data;
-                        if(questions.length > 0)
-                        {
+                        if (questions.length > 0) {
                             for (let i = 0; i < questions.length; i++) {
-                                html +=`
+                                html += `
                                     <tr>
-                                        <td> `+(i+1)+` </td>
+                                        <td> ` + (i + 1) + ` </td>
                                         <td> ` + questions[i]['questions'][0]['question'] + ` </td>
-                                         <td><button class="btn btn-danger deleteQuestion" data-id="`+questions[i]['id']+`">Delete</button></td>
+                                         <td><button class="btn btn-danger deleteQuestion" data-id="` + questions[i][
+                                    'id'
+                                ] + `">Delete</button></td>
                                     </tr>
                                 `;
                             }
-                        }
-                        else{
+                        } else {
                             html += `
                                 <tr>
                                     <td colspan="1">Questions not available!</td>
@@ -474,18 +508,19 @@
             });
 
             //delete quetion
-            $(document).on('click', '.deleteQuestion', function(){
+            $(document).on('click', '.deleteQuestion', function() {
                 var id = $(this).attr('data-id');
                 var obj = $(this);
                 $.ajax({
-                    url: "{{route('deleteExamQuestions')}}",
+                    url: "{{ route('deleteExamQuestions') }}",
                     type: "GET",
-                    data: {id:id},
-                    success:function(data){
-                        if(data.success == true)
-                        {
+                    data: {
+                        id: id
+                    },
+                    success: function(data) {
+                        if (data.success == true) {
                             obj.parent().parent().remove();
-                        }else{
+                        } else {
                             alert(data.msg);
                         }
                     }
@@ -494,17 +529,15 @@
             });
 
             //plan
-            $('.plan').change(function(){
+            $('.plan').change(function() {
                 var plan = $(this).val();
-                if(plan == 1)
-                {
+                if (plan == 1) {
                     $(this).next().attr('required', 'required');
                     $(this).next().next().attr('required', 'required');
 
                     $(this).next().prop('disabled', false);
                     $(this).next().next().prop('disabled', false);
-                }
-                else{
+                } else {
                     $(this).next().removeAttr('required', 'required');
                     $(this).next().next().removeAttr('required', 'required');
 
