@@ -73,7 +73,7 @@ class AdminController extends Controller
             $plan = $request->plan;
             $prices = null;
 
-            if(isset($request->azn) && isset($request->usd)){
+            if (isset($request->azn) && isset($request->usd)) {
                 $prices = json_encode(['AZN' => $request->azn, 'USD' => $request->usd]);
             }
             $unique_id = uniqid('exid');
@@ -154,7 +154,7 @@ class AdminController extends Controller
         try {
 
             $explanation = null;
-            if(isset($request->explanation)){
+            if (isset($request->explanation)) {
                 $explanation = $request->explanation;
             }
 
@@ -172,7 +172,7 @@ class AdminController extends Controller
                 ]);
             }
 
-            return response()->json(['success' => true, 'msg' => 'Exam deleted Successfully!']);
+            return response()->json(['success' => true, 'msg' => 'Exam added Successfully!']);
         } catch (\Throwable $e) {
             return response()->json(['success' => false, 'msg' => $e->getMessage()]);
         }
@@ -332,22 +332,20 @@ class AdminController extends Controller
     {
         try {
             $questions = Question::all();
-            if(count($questions) > 0){
+            if (count($questions) > 0) {
                 $data = [];
                 $counter = 0;
 
                 foreach ($questions as $question) {
                     $qnaExam = QnaExam::where(['exam_id' => $request->exam_id, 'question_id' => $request->id])->get();
-                    if(count($qnaExam) == 0){
+                    if (count($qnaExam) == 0) {
                         $data[$counter]['id'] = $question->id;
                         $data[$counter]['questions'] = $question->question;
                         $counter++;
                     }
                 }
                 return response()->json(['success' => true, 'msg' => "Questions data!", "data" => $data]);
-            }
-            else
-            {
+            } else {
                 return response()->json(['success' => false, 'msg' => "Questions not found"]);
             }
         } catch (\Exception $e) {
@@ -358,7 +356,7 @@ class AdminController extends Controller
     public function addQuestions(Request $request)
     {
         try {
-            if(isset($request->questions_ids)){
+            if (isset($request->questions_ids)) {
                 foreach ($request->questions_ids as $qid) {
                     QnaExam::insert([
                         'exam_id' => $request->exam_id,
@@ -367,7 +365,6 @@ class AdminController extends Controller
                 }
             }
             return response()->json(['success' => true, 'msg' => "Questions added successfully!"]);
-
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'msg' => $e->getMessage()]);
         }
@@ -379,10 +376,8 @@ class AdminController extends Controller
         try {
             $data = QnaExam::where('exam_id', $request->exam_id)->with('questions')->get();
             return response()->json(['success' => true, 'msg' => 'Questions details!', 'data' => $data]);
-
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'msg' => $e->getMessage()]);
-
         }
     }
 
@@ -426,9 +421,9 @@ class AdminController extends Controller
     {
         try {
             $attemptData  = ExamAnswer::where('attempt_id', $request->attempt_id)->with(['question', 'answers'])->get();
-            return response()->json(['success' => true,'data' => $attemptData]);
+            return response()->json(['success' => true, 'data' => $attemptData]);
         } catch (\Exception $e) {
-            return response()->json(['success' => false,'msg' => $e->getMessage()]);
+            return response()->json(['success' => false, 'msg' => $e->getMessage()]);
         }
     }
 
@@ -437,17 +432,16 @@ class AdminController extends Controller
         try {
             $attemptId = $request->attempt_id;
 
-            $examData = ExamAttempt::where('id', $attemptId)->with(['user','exam'])->get();
+            $examData = ExamAttempt::where('id', $attemptId)->with(['user', 'exam'])->get();
 
             $marks = $examData[0]['exam']['marks'];
 
             $attemptData = ExamAnswer::where('attempt_id', $attemptId)->with('answers')->get();
             $totalMarks = 0;
 
-            if(count($attemptData) > 0)
-            {
+            if (count($attemptData) > 0) {
                 foreach ($attemptData as $attempt) {
-                    if($attempt->answers->is_correct == 1){
+                    if ($attempt->answers->is_correct == 1) {
                         $totalMarks += $marks;
                     }
                 }
@@ -458,21 +452,21 @@ class AdminController extends Controller
             ]);
 
             $url = URL::to('/');
-            $data['url'] = $url.'/results';
+            $data['url'] = $url . '/results';
             $data['name'] = $examData[0]['user']['name'];
             $data['email'] = $examData[0]['user']['email'];
             $data['name'] = $examData[0]['exam']['name'];
-            $data['title'] = $examData[0]['exam']['name'].'Result';
+            $data['title'] = $examData[0]['exam']['name'] . 'Result';
 
-           /* Mail::send('mail.result-mail', ['data' => $data], function ($message) use ($data){    //I haven't check this code yet
+            /* Mail::send('mail.result-mail', ['data' => $data], function ($message) use ($data){    //I haven't check this code yet
                 $message->to($data['email'])->subject($data['title']);
             });*/
 
 
 
-            return response()->json(['success' => true,'msg' => 'Approved Successfully', 'data' => $marks]);
+            return response()->json(['success' => true, 'msg' => 'Approved Successfully', 'data' => $marks]);
         } catch (\Exception $e) {
-            return response()->json(['success' => false,'msg' => $e->getMessage()]);
+            return response()->json(['success' => false, 'msg' => $e->getMessage()]);
         }
     }
 }
