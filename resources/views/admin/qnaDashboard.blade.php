@@ -17,6 +17,7 @@
             <th>Answers</th>
             <th>Edit</th>
             <th>Delete</th>
+            
         </thead>
         <tbody>
             @if (count($questions) > 0)
