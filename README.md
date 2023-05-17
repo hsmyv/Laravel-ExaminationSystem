@@ -13,3 +13,9 @@ Add Exam
 
 See Questions
 ![see Question](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/8ac42dd9-d288-4cff-b10a-7d2b016fba13)
+
+Marks 
+![marks](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/60b74a5a-9ce9-443b-86f7-111fd28d43e7)
+
+Marks Update
+![marks update](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/fce1eb1b-fef4-4396-8c3e-14d5c577badd)
