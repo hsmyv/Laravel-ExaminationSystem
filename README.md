@@ -19,3 +19,6 @@ Marks
 
 Marks Update
 ![marks update](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/fce1eb1b-fef4-4396-8c3e-14d5c577badd)
+
+Questions and Answers
+![question answer](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/695b223b-0c68-4458-9bb4-e50472910a51)
