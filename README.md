@@ -22,3 +22,6 @@ Marks Update
 
 Questions and Answers
 ![question answer](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/695b223b-0c68-4458-9bb4-e50472910a51)
+
+Questions and Answers 2
+![question answer 2](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/21d9b6f1-7bc9-4513-a562-6a4afbcece87)
