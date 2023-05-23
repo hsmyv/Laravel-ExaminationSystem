@@ -28,3 +28,7 @@ Questions and Answers 2
 
 Import Questions and Answers
 ![import quenstion answer](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/920ef5f4-8a5c-4384-a794-5d73d29f25c5)
+
+Questions and Answers Update
+![Question Answer update](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/927e7794-344d-4546-89dc-ea9188eaa089)
+
