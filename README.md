@@ -35,3 +35,6 @@ Questions and Answers Update
 Students
 ![Students](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/2ce3a5af-ae47-4c8d-8719-75e33d8f1c8f)
 
+Edit Students
+![edit student](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/4e8aff92-d4e0-4ca5-bd6a-a9fff326796c)
+
