@@ -41,4 +41,6 @@ Edit Students
 Exam Review
 ![ExamReview](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/c0a652aa-b2b0-4dc1-9c16-17a951a7ac17)
 
+Student Exam 
+![student exam](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/ddcabd4e-c09f-4841-9a10-2f92db9b4c35)
 
