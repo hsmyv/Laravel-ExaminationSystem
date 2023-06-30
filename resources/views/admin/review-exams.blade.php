@@ -10,6 +10,7 @@
             <th>Exam</th>
             <th>Status</th>
             <th>Review</th>
+            <th>Delete</th>
         </thead>
         <tbody>
             @if (count($attempts) > 0)
@@ -32,8 +33,11 @@
                             @if ($attempt->status == 0)
                                 <a href="" class="reviewExam" data-id="{{$attempt->id}}" data-toggle="modal" data-target="#reviewExamModal">Review & Approved</a>
                             @else
-                                completed
+                                <a href="" class="reviewExam" data-id="{{$attempt->id}}" data-toggle="modal" data-target="#afterApprovedReviewExamModal">Completed</a>
                             @endif
+                        </td>
+                        <td>
+                            <button type="button" data-id="{{$attempt->id}}" data-name="{{$attempt->name}}" data-email="{{$attempt->email}}" class="btn btn-danger deleteButton" data-toggle="modal" data-target="#deleteAttemptModal">Delete</button>
                         </td>
                     </tr>
                 @endforeach
@@ -77,6 +81,58 @@
         </div>
     </div>
 
+     <!-- After approved The modal -->
+    <div class="modal fade" id="afterApprovedReviewExamModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Review Exam</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <input type="hidden" name="attempt_id" id="attempt_id">
+                <div class="modal-body afterApprovedReview-exam">
+                    Loading...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!--Delete Review Modal-->
+     <div class="modal fade" id="deleteAttemptModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Edit Student</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="deleteReview">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col">
+                                <p>Are you sure you want delete?</p>
+                                <input type="hidden" name="id" id="review_id">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <span class="error" style="color:red;"></span>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary deleteReviewButton">Delete Review </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <script>
         $(document).ready(function(){
             $('.reviewExam').click(function(){
@@ -144,6 +200,32 @@
                     alert(data.msg);
                 }
             }
+            });
+        });
+
+        $(document).ready(function(){
+
+            $(".deleteButton").click(function(){
+                var id = $(this).attr('data-id');
+                $("#review_id").val(id);
+            });
+
+            $("#deleteReview").submit(function(e){
+                e.preventDefault();
+                $('.deleteReviewButton').prop('disabled', true);
+                var formData = $(this).serialize();
+                $.ajax({
+                    url:"{{route('deleteReview')}}",
+                    type:"POST",
+                    data: formData,
+                    success:function(data){
+                        if(data.success = true){
+                            location.reload();
+                        }else{
+                            alert(data.msg);
+                        }
+                    }
+                });
             });
         });
     });

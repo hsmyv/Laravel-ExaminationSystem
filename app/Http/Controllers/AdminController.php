@@ -307,7 +307,7 @@ class AdminController extends Controller
             });*/
             return response()->json(['success' => true, 'msg' => "Student updated Successfully"]);
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'msg' => $e->getMessage()]);
+            return response()->json(['error' => false, 'msg' => $e->getMessage()]);
         }
     }
 
@@ -318,7 +318,7 @@ class AdminController extends Controller
             User::where('id', $request->id)->delete();
             return response()->json(['success' => true, 'msg' => "Student deleted successfully"]);
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'msg' => $e->getMessage()]);
+            return response()->json(['error' => false, 'msg' => $e->getMessage()]);
         }
     }
 
@@ -407,6 +407,16 @@ class AdminController extends Controller
             return response()->json(['success' => true, 'msg' => 'Marks Updated!']);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'msg' => $e->getMessage()]);
+        }
+    }
+    //Delete review
+    public function deleteReview(Request $request)
+    {
+        try {
+            ExamAttempt::where('id', $request->id)->delete();
+            return response()->json(['success' => true, 'msg' => "Review deleted successfully"]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => false, 'msg' => $e->getMessage()]);
         }
     }
 

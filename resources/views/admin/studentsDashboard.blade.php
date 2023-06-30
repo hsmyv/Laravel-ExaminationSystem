@@ -26,7 +26,9 @@
                               <button type="button" data-id="{{$student->id}}" data-name="{{$student->name}}" data-email="{{$student->email}}" class="btn btn-primary editButton" data-toggle="modal" data-target="#editStudentModal">
                                 Edit
                             </button>
-                            <button type="button" data-id="{{$student->id}}" data-name="{{$student->name}}" data-email="{{$student->email}}" class="btn btn-danger deleteButton" data-toggle="modal" data-target="#deleteStudentModal">
+                        </td>
+                        <td>
+                                    <button type="button" data-id="{{$student->id}}" data-name="{{$student->name}}" data-email="{{$student->email}}" class="btn btn-danger deleteButton" data-toggle="modal" data-target="#deleteStudentModal">
                                 Delete
                             </button>
                         </td>
