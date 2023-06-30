@@ -1,64 +1,46 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+## Examination System
+Subjects Dashboard
+![dashboard](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/12eb9117-3e58-4730-9fcd-91a32d7e7438)
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Exams
+![exams](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/f6e118e5-c431-4271-b323-b76e9acb6bff)
 
-## About Laravel
+See Exams' Questions
+![see Question](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/7af50810-7637-490b-8000-ea5f73cff1f0)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Add Exam
+![add Exam](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/67b1ed24-2782-4e70-9004-00c6845d7b9a)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+See Questions
+![see Question](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/db973bfd-d4f5-4c5c-a517-a5eefc7ea603)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Marks 
+![marks](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/1327e46f-0c97-449c-8c57-1579e814fe1d)
 
-## Learning Laravel
+Marks Update
+![marks update](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/aed7880a-aa2b-4c9b-b78c-d9da738a3e6d)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Questions and Answers
+![question answer](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/695b223b-0c68-4458-9bb4-e50472910a51)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Questions and Answers 2
+![question answer 2](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/21d9b6f1-7bc9-4513-a562-6a4afbcece87)
 
-## Laravel Sponsors
+Import Questions and Answers
+![import quenstion answer](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/920ef5f4-8a5c-4384-a794-5d73d29f25c5)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Questions and Answers Update
+![Question Answer update](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/927e7794-344d-4546-89dc-ea9188eaa089)
 
-### Premium Partners
+Students
+![Students](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/2ce3a5af-ae47-4c8d-8719-75e33d8f1c8f)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+Edit Students
+![edit student](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/4e8aff92-d4e0-4ca5-bd6a-a9fff326796c)
 
-## Contributing
+Exam Review
+![ExamReview](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/c0a652aa-b2b0-4dc1-9c16-17a951a7ac17)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Student Exam 
+![student exam](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/ddcabd4e-c09f-4841-9a10-2f92db9b4c35)
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
