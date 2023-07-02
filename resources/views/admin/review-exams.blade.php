@@ -33,7 +33,7 @@
                             @if ($attempt->status == 0)
                                 <a href="" class="reviewExam" data-id="{{$attempt->id}}" data-toggle="modal" data-target="#reviewExamModal">Review & Approved</a>
                             @else
-                                <a href="" class="reviewExam" data-id="{{$attempt->id}}" data-toggle="modal" data-target="#afterApprovedReviewExamModal">Completed</a>
+                                <a href="" class="afterReviewExam" data-id="{{$attempt->id}}" data-toggle="modal" data-target="#afterApprovedReviewExamModal">Completed</a>
                             @endif
                         </td>
                         <td>
@@ -81,27 +81,6 @@
         </div>
     </div>
 
-     <!-- After approved The modal -->
-    <div class="modal fade" id="afterApprovedReviewExamModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Review Exam</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <input type="hidden" name="attempt_id" id="attempt_id">
-                <div class="modal-body afterApprovedReview-exam">
-                    Loading...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
      <!--Delete Review Modal-->
      <div class="modal fade" id="deleteAttemptModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
@@ -170,7 +149,7 @@
                             }
                         }
                         else{
-                            html += `<h6>Student not attempt my Questions!</h6>
+                            html += `<h6>Student not attempt to the Questions!</h6>
                             <p>If you Approve this Exam Student not will access</p>`;
                         }
 
