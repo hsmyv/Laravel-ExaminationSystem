@@ -1,4 +1,6 @@
 ## Examination System
+The examination system is a crucial component of education, serving as a method to assess students' understanding, knowledge, and skills. 
+
 Subjects Dashboard
 ![dashboard](https://github.com/hsmyv/Laravel-ExaminationSystem/assets/111653544/12eb9117-3e58-4730-9fcd-91a32d7e7438)
 
